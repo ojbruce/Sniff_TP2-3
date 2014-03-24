@@ -11,6 +11,7 @@ char lettreToChar(char lettre);
 char charToLettre(char valeur);
 char* charToHexa(char valeur);
 char hexaToChar(char hexa1, char hexa2);
-char* convertAdresse(char* adr);
+void convertAdresse(char* adr, char* res);
+void convertType(char* type, char* res);
 
 #endif //CONVERT_H

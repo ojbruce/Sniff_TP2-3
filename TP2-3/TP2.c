@@ -75,23 +75,29 @@ struct eth_frame lire_trame()
  **/
 int findTriplet(struct eth_frame trame, int MAXTAB, unsigned char TadrSrc[MAXTAB][6], unsigned char TadrDst[MAXTAB][6], unsigned char Ttype[MAXTAB][2], int nbTriplet)
 {
-	int i;
+	int fini = 0;
+	int i = 0;
 
-	for(i = 0; i < nbTriplet; i++)
+	while(!fini && i < nbTriplet)
 	{
-		if(memcmp(TadrSrc[i], trame.adr_send, 6) == 0)
+		if(memcmp(TadrSrc[i], trame.adr_send, 6) == 0) //Si c'est la même source
 		{
-			if(memcmp(TadrDst[i], trame.adr_dest, 6) == 0)
+			if(memcmp(TadrDst[i], trame.adr_dest, 6) == 0) //Et la même destination
 			{
-				if(memcmp(Ttype[i], trame.type, 2) == 0)
+				if(memcmp(Ttype[i], trame.type, 2) == 0) //Et le même type
 				{
-					return i;
+					fini = 1;
 				}
 			}
 		}
+
+		i++;
 	}
 
-	return -1;
+	if(fini)
+		return i-1;
+	else
+		return -1;
 }
 
 /**
@@ -99,16 +105,23 @@ int findTriplet(struct eth_frame trame, int MAXTAB, unsigned char TadrSrc[MAXTAB
  * Renvoie -1  si l'adresse source n'est pas déjà présente
  **/
 int findUnique(int MAXTAB,unsigned char tUnique[MAXTAB][6], int nbUnique, unsigned char adr_trame[6]){
-	int i;
-	for(i = 0; i < nbUnique; i++)
+	int fini = 0;
+	int i = 0;
+
+	while(!fini && i < nbUnique)
 	{
 		if(memcmp(tUnique[i], adr_trame, 6) == 0)
 		{
-			return i;
+			fini = 1;
 		}
+
+		i++;
 	}
 
-	return -1;
+	if(fini)
+		return i-1;
+	else
+		return -1;
 }
 
 
@@ -132,6 +145,9 @@ int main()
 	int i;
 
 	int nbTriplet = 0;
+
+	char str_adr[18];
+	char str_type[5];
 
 	// Lecture de de 0 jusqu'à 100 trames
 	for(i = 0; i < MAXTAB; i++)
@@ -176,7 +192,8 @@ int main()
 
 	for(i = 0; i < nbUnique; i++)
 	{
-		printf("\tPoste %d : %s:%s:%s:%s:%s:%s\n", i+1,charToHexa(TadrSrcUnique[i][0]), charToHexa(TadrSrcUnique[i][1]), charToHexa(TadrSrcUnique[i][2]), charToHexa(TadrSrcUnique[i][3]), charToHexa(TadrSrcUnique[i][4]), charToHexa(TadrSrcUnique[i][5]));
+		convertAdresse(TadrSrcUnique[i], str_adr);
+		printf("\tPoste %d : %s\n", i+1, str_adr);
 	}
 
 	// Triplets des postes: adresse source, adresse destination, type, compteur
@@ -184,11 +201,14 @@ int main()
 
 	for(i = 0; i < nbTriplet; i++)
 	{
-		printf("\tAdresse source : %s:%s:%s:%s:%s:%s\n", charToHexa(TadrSrc[i][0]), charToHexa(TadrSrc[i][1]), charToHexa(TadrSrc[i][2]), charToHexa(TadrSrc[i][3]), charToHexa(TadrSrc[i][4]), charToHexa(TadrSrc[i][5]));
+		convertAdresse(TadrSrc[i], str_adr);
+		printf("\tAdresse source : %s\n", str_adr);
 
-		printf("\tAdresse destination : %s:%s:%s:%s:%s:%s\n", charToHexa(TadrDst[i][0]), charToHexa(TadrDst[i][1]), charToHexa(TadrDst[i][2]), charToHexa(TadrDst[i][3]), charToHexa(TadrDst[i][4]), charToHexa(TadrDst[i][5]));
+		convertAdresse(TadrDst[i], str_adr);
+		printf("\tAdresse destination : %s\n", str_adr);
 
-		printf("\tType : %s%s\n", charToHexa(Ttype[i][0]), charToHexa(Ttype[i][1]));
+		convertType(Ttype[i], str_type);
+		printf("\tType : %s\n", str_type);
 
 		printf("\tCompteur : %d\n\n", Tcpt[i]);
 	}

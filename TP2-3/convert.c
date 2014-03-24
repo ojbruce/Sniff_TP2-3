@@ -118,7 +118,7 @@ char* charToHexa(char valeur)
 	hexa[0] = charToLettre(dizaine);
 	hexa[1] = charToLettre(unite);
 
-	return hexa
+	return hexa;
 }
 
 char hexaToChar(char hexa1, char hexa2)
@@ -129,11 +129,12 @@ char hexaToChar(char hexa1, char hexa2)
 	return hexa1*16 + hexa2;
 }
 
-char* convertAdresse(char* adr)
+void convertAdresse(char* adr, char* res)
 {
-	char res[18];
-
 	sprintf(res, "%s:%s:%s:%s:%s:%s", charToHexa(adr[0]), charToHexa(adr[1]), charToHexa(adr[2]), charToHexa(adr[3]), charToHexa(adr[4]), charToHexa(adr[5]));
+}
 
-	return res;
+void convertType(char* type, char* res)
+{
+	sprintf(res, "%s%s", charToHexa(type[0]), charToHexa(type[1]));
 }
