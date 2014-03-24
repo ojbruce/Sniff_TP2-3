@@ -11,5 +11,6 @@ char lettreToChar(char lettre);
 char charToLettre(char valeur);
 char* charToHexa(char valeur);
 char hexaToChar(char hexa1, char hexa2);
+char* convertAdresse(char* adr);
 
 #endif //CONVERT_H

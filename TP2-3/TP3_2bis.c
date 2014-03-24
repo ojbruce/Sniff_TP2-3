@@ -163,10 +163,10 @@ int main()
 				strcat(mess,nom_emmet);
 				strcat(mess," bien reçu par Olivia et Matthieu."); //taille : 34
 	
-				printf("Message à envoyer: %s\n",mess);	
+				printf("A repondu à: %s\n", convertAdresse(trame.adr_send));	
 	
 				//L'emmeteur devient le destinataire
-				sprintf(dest, "%s:%s:%s:%s:%s:%s", charToHexa(trame.adr_send[0]), charToHexa(trame.adr_send[1]), charToHexa(trame.adr_send[2]), charToHexa(trame.adr_send[3]), charToHexa(trame.adr_send[4]), charToHexa(trame.adr_send[5]));
+				dest = convertAdresse(trame.adr_send);
 	
 				//On précise la taille du message
 				envoie_trame(src, dest , mess, nomlen +34+8);
@@ -180,7 +180,11 @@ int main()
 				printf("\tMessage : %s\n", Mess[nbMess-1]);*/
 
 			}
-		}	
+		}
+		else if(trame.type[0] == -112 && trame.type[1] == 0 && memcmp(src, trame.adr_dest) == 0) //Si on s'adresse à nous && type = 9000 => réponse à notre bonjour
+		{
+			printf("A recu une reponse de : %s\n", convertAdresse(trame.adr_send));
+		}
 	}
 
 	return 0;
