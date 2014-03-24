@@ -61,7 +61,7 @@ int main()
 	
 	while(1){
 		//Cree de la trame Bonjour et l'envoie
-		envoie_trame(src, dest , "Bonjour de Olivia", 6 + 6 + 2 + 18);	
+		envoie_trame(src, dest , "Bonjour de Olivia et Matthieu", 6 + 6 + 2 + 30);	
 	}
 
 	return 0;
