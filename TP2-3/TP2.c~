@@ -1,5 +1,6 @@
 /**
- * 
+ * Auteur : Matthieu Riou - Bruce Olivia
+ *
  * TP2 - But : Récupère la sortie du programme sniff et analyse les trames
  * afin de comptabiliser le nombre de triplets identiques ( @source ;@destination ; type )
  * 
@@ -10,7 +11,7 @@
 
 #include "eth_lib.h"
 #include <string.h>
-#include "convert.h"
+#include "convert.h" //Nos méthodes de conversion
 
 /**
  * Methode de lecture de latrame

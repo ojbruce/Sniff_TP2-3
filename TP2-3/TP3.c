@@ -1,7 +1,11 @@
 /**
  * Auteur : Matthieu Riou - Bruce Olivia
  *
- * TP3 - But : 
+ * TP3 - But : Premier programme qui envoie en continu une trame spécifiant Bonjour de Olivia 
+ * depuis votre poste, une trame Ethernet en diffusion, de type « 9000 ».
+ *
+ * Compilation:  	gcc  TP3.c  eth_lib.c convert.c  -o  tp3_1.exe
+ * Exécution:  	sudo ./tp3_1.exe
  */
 
 #include "eth_lib.h"
@@ -38,6 +42,7 @@ void envoie_trame(char* src, char* dest, char* mess, int taille){
 	strcat(ligne_appel, char_to_charhexa((unsigned char*) &trame, taille));
 	system(ligne_appel);
 	
+	// Arret une seconde
 	sleep(1);
 
 } 
@@ -54,11 +59,9 @@ int main()
 	char* src = get_eth_addr(interface);
 	
 	
-	
 	while(1){
-	//Cree de la trame Bonjour et l'envoie
-		envoie_trame(src, dest , "Bonjour de Olivia", 6 + 6 + 2 + 18);
-		
+		//Cree de la trame Bonjour et l'envoie
+		envoie_trame(src, dest , "Bonjour de Olivia", 6 + 6 + 2 + 18);	
 	}
 
 	return 0;

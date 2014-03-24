@@ -4,7 +4,11 @@
 #include <string.h>
 #include "convert.h"
 
-// lecture d'une trame
+/**
+ * Methode de lecture de latrame
+ * Lit une succession d'hexa les transforme en char puis les stock dans la tram
+ * @return trame la trame reconstituée
+ **/
 struct eth_frame lire_trame(int* taille) 
 {
 
@@ -52,32 +56,11 @@ struct eth_frame lire_trame(int* taille)
 
 
 /*
- *
- *
- */
-struct eth_frame reception(char* src, char* dest, char* mess, int taille){
-	struct eth_frame trame;
-	int i;
-	
-	// On entre les adresses
-	for(i = 0; i < 6; i++)
-	{
-		trame.adr_send[i] = hexaToChar(src[3*i], src[3*i+1]);
-		trame.adr_dest[i] = hexaToChar(dest[3*i], dest[3*i+1]);
-	}
-	
-	// On définit le type
-	trame.type[0] = hexaToChar('9', '0');
-	trame.type[1] = hexaToChar('0', '0');	
-	
-	strcpy(trame.data,mess);
-	
-	return trame;
-}
-
-/*
- *
- *
+ * Methode qui envoie une trame en specifiant adresse source et dest et un message
+ * @param src		la source de la trame (nous)
+ * @param dest		destinataire, celui à qui on envoie la trame
+ * @param mess		le message à envoyer dans la trame
+ * @param taille	la taille du message
  */
 void envoie_trame(char* src, char* dest, char* mess, int taille){
 	struct eth_frame trame;

@@ -4,7 +4,7 @@
  * TP2 - But : Récupère la sortie du programme sniff et analyse les trames
  * afin de comptabiliser le nombre de triplets identiques ( @source ;@destination ; type )
  * 
- * Compilation:  gcc  tp2.c  eth_lib.c  -o  tp2.exe
+ * Compilation:  gcc  tp2.c  eth_lib.c convert.c  -o  tp2.exe
  * Exécution:  ./sniff  |  ./tp2.exe
  */
  
