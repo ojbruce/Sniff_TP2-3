@@ -1,7 +1,7 @@
 /**
  * Auteur : Matthieu Riou - Bruce Olivia
  *
- * TP3 - But : Premier programme qui envoie en continu une trame spécifiant Bonjour de Olivia 
+ * TP3 - But : Premier programme qui envoie en continu une trame spécifiant "Bonjour de Olivia et Matthieu"
  * depuis votre poste, une trame Ethernet en diffusion, de type « 9000 ».
  *
  * Compilation:  	gcc  TP3.c  eth_lib.c convert.c  -o  tp3_1.exe
