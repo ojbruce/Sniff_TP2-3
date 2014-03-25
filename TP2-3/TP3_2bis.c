@@ -93,16 +93,22 @@ void envoie_trame(char* src, char* dest, char* mess, int taille){
  * Renvoie -1  si l'adresse source n'est pas déjà présente
  **/
 int findMessage(int MAXTAB, char* tMessage[MAXTAB], int nbMessage, char* mess, int tailleMess){
-	int i;
-	for(i = 0; i < nbMessage; i++)
+	int fini = 0;
+	int i = 0;
+	while(!fini && i < nbMessage)
 	{
 		if(memcmp(tMessage[i], mess, tailleMess) == 0)
 		{
-			return i;
+			fini = 1;
 		}
+
+		i++;
 	}
 
-	return -1;
+	if(fini)
+		return i-1;
+	else
+		return -1;
 }
 
 int main() 
@@ -128,10 +134,15 @@ int main()
 	// On récupère l'adresse de la machine (eth0)
 	char* src = get_eth_addr(interface);
 
+	char str_adr[6];
+	char str_type[2];
+
 	for(i = 0; i < MAXTAB; i++)
 	{
 		trame = lire_trame(&tailleTrame);
-		printf("%s%s - %s\n", charToHexa(trame.type[0]), charToHexa(trame.type[1]), trame.data);
+		
+		//convertType(trame.type, str_type);
+		//printf("%s - %s\n", str_type, trame.data);
 		
 		if(trame.type[0] == -112 && trame.type[1] == 0 && trame.adr_dest[0] == -1 && trame.adr_dest[1] == -1 && trame.adr_dest[2] == -1 && trame.adr_dest[3] == -1 && trame.adr_dest[4] == -1 && trame.adr_dest[5] == -1)
 		{
@@ -161,29 +172,25 @@ int main()
 				//On construit le message
 				char mess[100] = "Bonjour "; //taille : 8
 				strcat(mess,nom_emmet);
-				strcat(mess," bien reçu par Olivia et Matthieu."); //taille : 34
+				strcat(mess," bien reçu par Olivia et Matthieu"); //taille : 34
 	
-				printf("A repondu à: %s\n", convertAdresse(trame.adr_send));	
+				convertAdresse(trame.adr_send, str_adr);
+				printf("A repondu à %s (%s)\n", nom_emmet, str_adr);	
 	
 				//L'emmeteur devient le destinataire
-				dest = convertAdresse(trame.adr_send);
+				convertAdresse(trame.adr_send, dest);
 	
 				//On précise la taille du message
 				envoie_trame(src, dest , mess, nomlen +34+8);
 
-
-				
-				/*printf("\tAdresse source : %s:%s:%s:%s:%s:%s\n", charToHexa(Source[nbMess -1][0]), charToHexa(Source[nbMess -1][1]), charToHexa(Source[nbMess -1][2]), charToHexa(Source[nbMess -1][3]), charToHexa(Source[nbMess -1][4]), charToHexa(Source[nbMess -1][5]));
-
-				printf("\tAdresse destination : %s:%s:%s:%s:%s:%s\n", charToHexa(Dest[nbMess-1][0]), charToHexa(Dest[nbMess-1][1]), charToHexa(Dest[nbMess-1][2]), charToHexa(Dest[nbMess-1][3]), charToHexa(Dest[nbMess-1][4]), charToHexa(Dest[nbMess-1][5]));
-
-				printf("\tMessage : %s\n", Mess[nbMess-1]);*/
-
 			}
 		}
-		else if(trame.type[0] == -112 && trame.type[1] == 0 && memcmp(src, trame.adr_dest) == 0) //Si on s'adresse à nous && type = 9000 => réponse à notre bonjour
+		else if(trame.type[0] == -112 && trame.type[1] == 0 && memcmp(src, trame.adr_dest, 6) == 0) //Si on s'adresse à nous && type = 9000 => réponse à notre bonjour
 		{
-			printf("A recu une reponse de : %s\n", convertAdresse(trame.adr_send));
+			char* pos = strstr(trame.data, "bien reçu par ") + 15;			
+
+			convertAdresse(trame.adr_send, str_adr);
+			printf("A recu une reponse de %s (%s)\n", pos, str_adr);
 		}
 	}
 
